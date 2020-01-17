@@ -1,0 +1,315 @@
+<meta charset="utf-8"/>
+
+<script type="text/javascript">
+    // Utility
+    function jsonToQueryString(json) {
+        return Object.keys(json).map(function(key) {
+                return encodeURIComponent(key) + '=' +
+                    encodeURIComponent(json[key]);
+            }).join('&');
+    }
+
+
+//trackers
+//ts orders
+var TSCount = 0
+var TSRecent = []
+for (i = 0; i < 60; i++) {
+    TSRecent.push(0)
+}
+var TSCountTotal = 0
+//shares
+var sharesCount = 0
+var sharesRecent = []
+for (i = 0; i < 60; i++) {
+    sharesRecent.push(0)
+}
+var sharesCountTotal = 0
+
+//gap of how long to track orders
+var gap = 10
+
+
+var userPrincipalsResponse = {
+  "authToken": "SBsBxs3J2Zz/YwU8V3532aKFcgwT4eeCX8NHrW6yeo8QlAlSa2BJG8YVwY+7t/y+VPTQyX/HmLR8J60NVn9Qhde7JQ1W7ENV8YhoCtDwNSI4ezoNot6ejOEUVzAWKBb+8MsTFEbJbOmUg9UWULs4pvM0iJMRVwTXtqb65aD2HNGFbyghKpZw3d18lHyMbCNjnXkxJuznE13mB74d2NJoAJ4ogKBK6QLB9McA01w7aTPKJUo0m8rFEhsq05O+rnH0V3uxfJgRaqdGpExlJgn7b0pqqCArkqZJzO6/Bg+IjEzhimaeoKePiZQakzSX2FTsbQ6bv5wtB3EnP7d6nSbqh6tdZ641ZjQjzqOBm9cPbSgv80LjaRrKuU8iVHZ2jRtFinnHQKO9rucQVeQU+9s7WmT6JymLmibmzi+zqArecNNoY3i+G5/fg8VB5zBTGf1DydIOYx0QfxEcmOcWxOMKx4133HUxSLaXP9EcKX0TleKT1PNakgOOX1rE4IUeAWtJzH/OCyfA6X3vW9wVB8jX/qnuwyKAZofVaDV3X100MQuG4LYrgoVi/JHHvll7obMmq7dIdifqyiTFLaksfjyWACmy1ort2cY+83n/vGrh1WmTCBQ6Dxz2PVF59rV1g+qUx7Lvn/SwAaJtDJxZtGB4Bd1D8lrA0dasBLcAuV9VAy1V47+kIQdFGvjSXEGucEIrq0K+2ur4G7UzT4ddELFmMIYqcMTLPlOXop4fkQps9ecGSB7tTWXmkjVMFzYnt+7NiYmR59j5R7ruEKT6/BvKosCnOSxhShh84W8WPlAUqJhjLIQuCiYHLvXVCOXTzok1HWRjE44p20aRDEiAIQfqK11kEtwE4ekqPi605Y2Mz9NHrkPG8jUN8kLTsPNQc3zfvSFH97ALiTkxONKdJHvzqeKfteZdVSf45sKkEhRB1eHmVZD6NU53kXNM2zgVxfH4j6UXWzu3+MMGY7147P+7luHkyQrIaVN3gWEIyMeCkPkqkN8Yz31J6qA80b/oqn8YH/SI7XEpXFuZ2z146J1v4tEdmuFcO7O3g3CJJ0pq/mQ9H4tFasHNU17zR0cNMz7wpFhRSDDBUPwX9IeKgh39W1rh3BI+YRqK212FD3x19z9sWBHDJACbC00B75E",
+  "userId": "35908460",
+  "userCdDomainId": "A000000046618376",
+  "primaryAccountId": "423482038",
+  "lastLoginTime": "2020-01-08T16:45:38+0000",
+  "tokenExpirationTime": "2020-01-08T17:15:39+0000",
+  "loginTime": "2020-01-08T16:45:39+0000",
+  "accessLevel": "CUS",
+  "stalePassword": false,
+  "streamerInfo": {
+    "streamerBinaryUrl": "streamer-bin.tdameritrade.com",
+    "streamerSocketUrl": "streamer-ws.tdameritrade.com",
+    "token": "920dff953ed872770465ee9dc03f586771317e0d",
+    "tokenTimestamp": "2020-01-08T16:45:58+0000",
+    "userGroup": "ACCT",
+    "accessLevel": "ACCT",
+    "acl": "BPDRDTESF7G1G3G5G7GKGLH1H3H5M1PNRFSDSTTBTETFTOTTUAXAXBXMXNXOD2D4D6D8E2E4E6E8F2F4F6H7I1",
+    "appId": "DP"
+  },
+  "professionalStatus": "NON_PROFESSIONAL",
+  "quotes": {
+    "isNyseDelayed": false,
+    "isNasdaqDelayed": false,
+    "isOpraDelayed": false,
+    "isAmexDelayed": false,
+    "isCmeDelayed": true,
+    "isIceDelayed": true,
+    "isForexDelayed": true
+  },
+  "streamerSubscriptionKeys": {
+    "keys": [
+      {
+        "key": "afcfd460831534f42f07bd296bd21bafb1df5252284b645358820f226686d9c75"
+      }
+    ]
+  },
+  "accounts": [
+    {
+      "accountId": "423482038",
+      "displayName": "35908460",
+      "accountCdDomainId": "A000000042337560",
+      "company": "AMER",
+      "segment": "AMER",
+      "acl": "BPDRDTESF7G1G3G5G7GKGLH1H3H5M1PNRFSDSTTBTETFTOTTUAXAXBXMXNXO",
+      "authorizations": {
+        "apex": false,
+        "levelTwoQuotes": false,
+        "stockTrading": true,
+        "marginTrading": false,
+        "streamingNews": false,
+        "optionTradingLevel": "NONE",
+        "streamerAccess": true,
+        "advancedMargin": false,
+        "scottradeAccount": true
+      }
+    }
+  ]
+}
+
+    //Converts ISO-8601 response in snapshot to ms since epoch accepted by Streamer
+    var tokenTimeStampAsDateObj = new Date(userPrincipalsResponse.streamerInfo.tokenTimestamp);
+    var tokenTimeStampAsMs = tokenTimeStampAsDateObj.getTime();
+
+var credentials = {
+    "userid": userPrincipalsResponse.accounts[0].accountId,
+    "token": userPrincipalsResponse.streamerInfo.token,
+    "company": userPrincipalsResponse.accounts[0].company,
+    "segment": userPrincipalsResponse.accounts[0].segment,
+    "cddomain": userPrincipalsResponse.accounts[0].accountCdDomainId,
+    "usergroup": userPrincipalsResponse.streamerInfo.userGroup,
+    "accesslevel": userPrincipalsResponse.streamerInfo.accessLevel,
+    "authorized": "Y",
+    "timestamp": tokenTimeStampAsMs,
+    "appid": userPrincipalsResponse.streamerInfo.appId,
+    "acl": userPrincipalsResponse.streamerInfo.acl
+}
+
+var request = {
+    "requests": [
+            {
+                "service": "ADMIN",
+                "command": "LOGIN",
+                "requestid": 0,
+                "account": userPrincipalsResponse.accounts[0].accountId,
+                "source": userPrincipalsResponse.streamerInfo.appId,
+                "parameters": {
+                    "credential": jsonToQueryString(credentials),
+                    "token": userPrincipalsResponse.streamerInfo.token,
+                    "version": "1.0"
+                }
+            }
+    ]
+}
+
+
+var timesales = {
+    "requests": [
+        {
+            "service": "TIMESALE_EQUITY",
+            "requestid": "2",
+            "command": "SUBS",
+            "account": userPrincipalsResponse.accounts[0].accountId,
+            "source": userPrincipalsResponse.streamerInfo.appId,
+            "parameters": {
+                "keys": "CHK",
+                "fields": "0,1,2,3,4"
+            }
+        }
+    ]
+}
+
+var level2 = {
+    "requests": [
+        {
+            "service": "NASDAQ_BOOK",
+            "requestid": "3",
+            "command": "SUBS",
+            "account": userPrincipalsResponse.accounts[0].accountId,
+            "source": userPrincipalsResponse.streamerInfo.appId,
+            "parameters": {
+                "keys": "CHK",
+                "fields": "0,1,2,3,4"
+            }
+        }
+    ]
+}
+
+var mySock = new WebSocket("wss://" + userPrincipalsResponse.streamerInfo.streamerSocketUrl + "/ws"); 
+
+mySock.onmessage = function(evt) {
+    
+    //stores all received responses
+    var info = JSON.parse(evt.data)
+    
+    if (info["response"] != null && info["response"][0].service == "ADMIN") {
+        if (info["response"][0].command == "LOGIN")
+            console.log("LOGGED IN")
+    }
+    
+    //MAIN TIMESALES
+    //digs through timesales json to get relevant info and prints it
+    if (info["data"] != null  && info["data"][0].service == "TIMESALE_EQUITY") {
+        timesales = info["data"][0].content
+        
+        var batchTSCount = 0
+        var batchShares = 0
+        
+        for (i = 0; i < timesales.length; i++) {
+        
+            console.log(timesales[i].key)
+            console.log("Price: " + timesales[i]["2"])
+            console.log("Shares: " + timesales[i]["3"])
+            
+            var epoch = new Date(timesales[i]["1"]);
+            epoch = epoch.toLocaleString()
+            console.log("Time: " + epoch.split(",")[1])
+            
+            secs = epoch.split(",")[1].split(":")[2].split(" ")[0]
+            
+            batchTSCount += 1
+            batchShares += timesales[i]["3"]
+            
+        }
+        
+        TSRecent[parseInt(secs)] += batchTSCount
+        sharesRecent[parseInt(secs)] += batchShares
+        
+        //sets timer end and start; sets start2 to loop around (ex: 05 - 10 = 55)
+        start = parseInt(secs)
+        end = parseInt(secs) - gap
+        start2 = 0
+        if (end < 0) {
+            start2 = end * -1
+            end = 0
+        }
+        
+        //zeros the value at start - gap
+        if (end == 0) {
+            TSRecent[60 - start2] = 0
+            sharesRecent[60 - start2] = 0
+        }
+        else {
+            TSRecent[start - gap] = 0
+            sharesRecent[start - gap] = 0
+        }
+        
+        //takes into account all orders between start - (start-gap); second loop checks looped around values
+        TSCount = 0
+        sharesCount = 0
+        for (j = start; j > end; j--) {
+            TSCount += TSRecent[j]
+            sharesCount += sharesRecent[j]
+        }
+        for (q = 59; q > 59 - start2 + 1; q--) {
+            TSCount += TSRecent[q]
+            sharesCount += sharesRecent[q]
+        }
+        
+        //adds batch to total
+        TSCountTotal += batchTSCount
+        sharesCountTotal += batchShares
+        
+    }
+    else {
+        console.log(evt.data)
+    }
+    
+}
+
+mySock.onclose = function() {
+    clockOn = false
+    console.log("CLOSED"); 
+}
+
+var clock = 0
+var clockOn = false
+function timer() {
+    clock += 1
+}
+
+
+function login() {
+    mySock.send(JSON.stringify(request));
+}
+function ts() {
+    mySock.send(JSON.stringify(timesales));
+    clockOn = true
+}
+function dos() {
+    mySock.send(JSON.stringify(level2));
+}
+
+//mySock.send(JSON.stringify(request));
+//mySock.send(JSON.stringify(timesales));
+</script>
+<button onclick="login()">LOGIN</button>
+<button onclick="ts()">START</button>
+<button onclick="dos()">LEVEL 2</button>
+<button onclick="mySock.close()">CLOSE</button>
+
+<canvas height="650" id="ctx" style="border:1px solid #000000;" width="650"></canvas>
+<script>
+var ctx = document.getElementById("ctx").getContext("2d")
+
+
+var WIDTH = 650
+var HEIGHT = 650
+
+function update() {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT)
+    ctx.fillStyle = "black"
+	ctx.font = '20px Arial'
+    ctx.fillText("Time Run: " + clock/100, 96, HEIGHT / 2 - 200)
+    
+    ctx.fillText("Total orders: " + TSCountTotal, 96, HEIGHT / 2 - 100)
+    var avgOrdersPerGap = (TSCountTotal/(clock/1000))
+    ctx.fillText("Average Orders per " + gap + " seconds: " + avgOrdersPerGap.toFixed(2), 96, HEIGHT / 2 - 50)
+    if (TSCount > avgOrdersPerGap) {
+        ctx.fillStyle = "red"
+        ctx.font = '20px Arial'
+    }
+    ctx.fillText("Orders in past " + gap + " seconds: " + TSCount, 96, HEIGHT / 2)
+    
+    
+    ctx.fillStyle = "black"
+	ctx.font = '20px Arial'
+    
+    ctx.fillText("Shares total: " + sharesCountTotal, 96, HEIGHT / 2 + 100)
+    var avgSharesPerGap = (sharesCountTotal/(clock/1000))
+    ctx.fillText("Average shares in past " + gap + " seconds: " + avgSharesPerGap.toFixed(2), 96, HEIGHT / 2 + 150)
+    if (sharesCount > avgSharesPerGap) {
+        ctx.fillStyle = "red"
+        ctx.font = '20px Arial'
+    }
+    ctx.fillText("Shares in past " + gap + " seconds: " + sharesCount, 96, HEIGHT / 2 + 200)
+    
+    if (clockOn == true)
+        timer()
+}
+
+setInterval(update, 10);
+</script>
